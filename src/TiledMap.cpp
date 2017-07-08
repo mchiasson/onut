@@ -13,7 +13,7 @@
 
 // Third party
 #include <tinyxml2/tinyxml2.h>
-#include <zlib/zlib.h>
+#include <zlib.h>
 
 // STL
 #include <cassert>

@@ -281,21 +281,6 @@ list(APPEND src_files
     src/VertexBuffer.cpp 
     src/VideoPlayer.cpp
     src/Window.cpp 
-    src/zlib/adler32.c
-    src/zlib/compress.c
-    src/zlib/crc32.c
-    src/zlib/deflate.c
-    src/zlib/gzclose.c
-    src/zlib/gzlib.c
-    src/zlib/gzread.c
-    src/zlib/gzwrite.c
-    src/zlib/infback.c
-    src/zlib/inffast.c
-    src/zlib/inflate.c
-    src/zlib/inftrees.c
-    src/zlib/trees.c
-    src/zlib/uncompr.c
-    src/zlib/zutil.c
 )
 
 add_library(onut STATIC ${src_files})
@@ -315,14 +300,19 @@ list(APPEND includes
         ./src
 )
 
+# https://github.com/ruslo/hunter/wiki/pkg.zlib
+hunter_add_package(ZLIB)
+find_package(ZLIB CONFIG REQUIRED)
+list(APPEND libs PUBLIC ZLIB::zlib)
+
 if (LINUX OR RPI) # Only required on linux if we use std::thread
     find_package(Threads)
     list(APPEND libs PUBLIC ${CMAKE_THREAD_LIBS_INIT})
 endif()
 if (LINUX)
-    find_package(GLEW REQUIRED)
-    list(APPEND includes PUBLIC ${GLEW_INCLUDE_DIRS})
-    list(APPEND libs PUBLIC ${GLEW_LIBRARIES})
+    hunter_add_package(glew)
+    find_package(glew CONFIG REQUIRED)
+    list(APPEND libs PUBLIC glew::glew)
 endif()
 if (LINUX OR APPLE) # On Raspberry Pi we use video core directly and opengl es 2, no need for normal GL and SDL.
     find_package(OpenGL REQUIRED)
@@ -335,9 +325,10 @@ if (LINUX OR APPLE) # On Raspberry Pi we use video core directly and opengl es 2
     list(APPEND libs PUBLIC SDL2::SDL2-static)
 endif()
 if (UNIX)
-    find_package(CURL REQUIRED)
-    list(APPEND includes PUBLIC ${CURL_INCLUDE_DIRS})
-    list(APPEND libs PUBLIC ${CURL_LIBRARIES})
+    # https://github.com/ruslo/hunter/wiki/pkg.curl
+    hunter_add_package(CURL)
+    find_package(CURL CONFIG REQUIRED)
+    list(APPEND libs PUBLIC CURL::libcurl)
 endif()
 if (WIN32)
     if (ONUT_USE_OPENGL EQUAL 1)
