@@ -49,7 +49,6 @@ lib/
 
 # cmake
 CMakeCache.txt
-*.cmake
 Makefile
 
 # apple
