@@ -2,17 +2,16 @@
 #define GL_INCLUDES_H_INCLUDED
 
 #if defined(__APPLE__)
-    #include <OpenGL/gl3.h>
-    #include <OpenGL/glext.h>
+    #include <onut_gl/OnutGL.h>
+    #include <onut_gl/OnutGLExt.h>
     #include <SDL2/SDL.h>
 #elif defined(WIN32)
-    #define GLEW_STATIC
-    #include <onut_gl/glew.h>
-    #include <gl/GL.h>
+    #include <onut_gl/OnutGL.h>
+    #include <onut_gl/OnutGLExt.h>
     #include <gl/GLU.h>
-    #include <onut_gl/glext.h>
 #else
-    #include <GL/glew.h>
+    #include <onut_gl/OnutGL.h>
+    #include <onut_gl/OnutGLExt.h>
     #include <SDL2/SDL.h>
 #endif
 
