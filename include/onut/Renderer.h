@@ -10,6 +10,7 @@
 
 // STL
 #include <vector>
+#include <array>
 
 // Forward
 #include <onut/ForwardDeclaration.h>
@@ -28,9 +29,8 @@ namespace onut
     class RenderState
     {
     public:
-        RenderState() {}
-        RenderState(const Ttype& value) : m_value(value) {}
-        RenderState(const RenderState& other) : m_value(other.m_value) {}
+        RenderState(const Ttype& value) : m_value(value), m_isDirty(true) {}
+        RenderState(const RenderState& other) : m_value(other.m_value), m_isDirty(true) {}
 
         Ttype& operator=(const Ttype& value)
         {
@@ -121,7 +121,7 @@ namespace onut
 
         void reset();
 
-        RenderState<OTextureRef> textures[MAX_TEXTURES];
+        std::array<RenderState<OTextureRef>, MAX_TEXTURES> textures;
         RenderState<BlendMode> blendMode;
         RenderState<sample::Filtering> sampleFiltering;
         RenderState<sample::AddressMode> sampleAddressMode;

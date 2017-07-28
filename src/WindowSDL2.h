@@ -23,9 +23,11 @@ namespace onut
         bool pollEvents() override;
 
         SDL_Window* getSDLWindow() const;
+        SDL_GLContext getGLContext() const;
 
     private:
         SDL_Window* m_pWindow = nullptr;
+        SDL_GLContext m_pGLContext = nullptr;
     };
 }
 

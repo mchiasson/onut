@@ -18,56 +18,70 @@ ORendererRef oRenderer;
 
 namespace onut
 {
-    RenderStates::RenderStates()
+    RenderStates::RenderStates() :
+        textures({
+            std::shared_ptr<onut::Texture>(),
+            std::shared_ptr<onut::Texture>(),
+            std::shared_ptr<onut::Texture>(),
+            std::shared_ptr<onut::Texture>(),
+            std::shared_ptr<onut::Texture>(),
+            std::shared_ptr<onut::Texture>(),
+            std::shared_ptr<onut::Texture>(),
+            std::shared_ptr<onut::Texture>()
+        }),
+        blendMode(OBlendOpaque),
+        sampleFiltering(OFilterLinear),
+        sampleAddressMode(OTextureWrap),
+        viewport({0, 0, 100, 100}),
+        scissor({0, 0, 100, 100}),
+        projection(Matrix::Identity),
+        view(Matrix::Identity),
+        world(Matrix::Identity),
+        depthEnabled(false),
+        depthWrite(false),
+        backFaceCull(false),
+        scissorEnabled(false),
+        primitiveMode(OPrimitiveTriangleList),
+        vertexShader(nullptr),
+        pixelShader(nullptr),
+        vertexBuffer(nullptr),
+        indexBuffer(nullptr),
+        renderTarget(nullptr),
+        clearColor(Color::fromHexRGB(0x1d232d))
     {
-        for (auto& pTexture : textures)
-        {
-            pTexture = nullptr;
-        }
-        blendMode = OBlendOpaque;
-        sampleFiltering = OFilterLinear;
-        sampleAddressMode = OTextureWrap;
-        scissor = viewport = {0, 0, 100, 100};
-        projection = Matrix::Identity;
-        view = Matrix::Identity;
-        world = Matrix::Identity;
-        depthEnabled = false;
-        depthWrite = false;
-        backFaceCull = false;
-        scissorEnabled = false;
-        primitiveMode = OPrimitiveTriangleList;
-        vertexShader = nullptr;
-        pixelShader = nullptr;
-        vertexBuffer = nullptr;
-        indexBuffer = nullptr;
-        renderTarget = nullptr;
-        clearColor = Color::fromHexRGB(0x1d232d);
     }
 
-    RenderStates::RenderStates(const RenderStates& other)
+    RenderStates::RenderStates(const RenderStates& other) :
+        textures({
+            other.textures[0],
+            other.textures[1],
+            other.textures[2],
+            other.textures[3],
+            other.textures[4],
+            other.textures[5],
+            other.textures[6],
+            other.textures[7]
+        }),
+        blendMode(other.blendMode),
+        sampleFiltering(other.sampleFiltering),
+        sampleAddressMode(other.sampleAddressMode),
+        viewport(other.viewport),
+        scissor(other.scissor),
+        projection(other.projection),
+        view(other.view),
+        world(other.world),
+        depthEnabled(other.depthEnabled),
+        depthWrite(other.depthWrite),
+        backFaceCull(other.backFaceCull),
+        scissorEnabled(other.scissorEnabled),
+        primitiveMode(other.primitiveMode),
+        vertexShader(other.vertexShader),
+        pixelShader(other.pixelShader),
+        vertexBuffer(other.vertexBuffer),
+        indexBuffer(other.indexBuffer),
+        renderTarget(other.renderTarget),
+        clearColor(other.clearColor)
     {
-        for (int i = 0; i < MAX_TEXTURES; ++i)
-        {
-            textures[i] = other.textures[i];
-        }
-        blendMode = other.blendMode;
-        sampleFiltering = other.sampleFiltering;
-        sampleAddressMode = other.sampleAddressMode;
-        viewport = other.viewport;
-        scissor = other.scissor;
-        projection = other.projection;
-        view = other.view;
-        world = other.world;
-        depthEnabled = other.depthEnabled;
-        depthWrite = other.depthWrite;
-        backFaceCull = other.backFaceCull;
-        scissorEnabled = other.scissorEnabled;
-        primitiveMode = other.primitiveMode;
-        vertexShader = other.vertexShader;
-        pixelShader = other.pixelShader;
-        vertexBuffer = other.vertexBuffer;
-        indexBuffer = other.indexBuffer;
-        clearColor = other.clearColor;
     }
 
     RenderStates& RenderStates::operator=(const RenderStates& other)

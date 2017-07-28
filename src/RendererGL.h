@@ -52,7 +52,7 @@ namespace onut
         HWND m_hWnd = nullptr; // Holds Our Window Handle
 #else
         SDL_Window* m_pSDLWindow = nullptr;
-        SDL_GLContext m_glContext;
+        SDL_GLContext m_pGLContext = nullptr;
 #endif
 
         int m_lastVertexAttribCount = 0;

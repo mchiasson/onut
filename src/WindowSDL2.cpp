@@ -30,7 +30,7 @@ namespace onut
             return;
         }
 
-        // Create SDL Window
+        // Create SDL Window
         const auto& resolution = oSettings->getResolution();
         bool borderLessFullscreen = oSettings->getBorderlessFullscreen();
         bool resizable = oSettings->getIsResizableWindow();
@@ -59,14 +59,38 @@ namespace onut
             assert(false);
             return;
         }
+
+        //SDL_GL_SetAttribute (SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG);
+        //SDL_GL_SetAttribute (SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+        //SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+        //SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
+        //SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
+        //SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+        //SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+
+        m_pGLContext = SDL_GL_CreateContext(m_pWindow);
+        if (!m_pGLContext)
+        {
+            OLog("SDL_GL_CreateContext failed");
+            assert(false);
+            return;
+        }
+
+        SDL_GL_SetSwapInterval(1);
     }
 
     WindowSDL2::~WindowSDL2()
     {
+        if (m_pGLContext)
+        {
+            SDL_GL_DeleteContext(m_pGLContext);
+        }
+
         if (m_pWindow)
         {
             SDL_DestroyWindow(m_pWindow);
         }
+
         SDL_Quit();
     }
 
@@ -77,6 +101,11 @@ namespace onut
     SDL_Window* WindowSDL2::getSDLWindow() const
     {
         return m_pWindow;
+    }
+
+    SDL_GLContext WindowSDL2::getGLContext() const
+    {
+        return m_pGLContext;
     }
 
     bool WindowSDL2::pollEvents()
@@ -196,7 +225,7 @@ namespace onut
                 }
             }
 
-            // Everytime we poll, we need to update inputs
+            // Everytime we poll, we need to update inputs
             pInputDeviceSDL2->updateSDL2();
             for (int i = 0; i < 4; ++i)
             {
